@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam and Microphone Control</title>
+    <style>
+        #video {
+            width: 1280px;
+            height: 720px;
+            background-color: #000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Webcam and Microphone Control</h1>
+
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+    <br><br>
+    <video id="video" autoplay></video>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const video = document.getElementById('video');
+        let stream;
+
+        // Start video and audio stream
+        startBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: true });
+                video.srcObject = stream;
+                video.style.display = 'block';
+            } catch (error) {
+                console.error("Error accessing media devices.", error);
+            }
+        });
+
+        // Stop video and audio stream
+        stopBtn.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
